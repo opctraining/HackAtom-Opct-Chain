@@ -1,0 +1,12 @@
+syntax = "proto3";
+package hackatomopctchain.hackatomopctchain;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "hackatom-opct-chain/x/hackatomopctchain/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}
