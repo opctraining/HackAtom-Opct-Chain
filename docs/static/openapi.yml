@@ -19757,6 +19757,42 @@ paths:
           format: int64
       tags:
         - Query
+  /hackatom-opct-chain/exercise/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: HackatomopctchainExerciseParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /hackatom-opct-chain/hackatomopctchain/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -47136,6 +47172,16 @@ definitions:
     description: >-
       MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount
       response type.
+  hackatomopctchain.exercise.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  hackatomopctchain.exercise.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
   hackatomopctchain.hackatomopctchain.Params:
     type: object
     description: Params defines the parameters for the module.

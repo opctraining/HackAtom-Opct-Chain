@@ -100,6 +100,9 @@ import (
 
 	"hackatom-opct-chain/docs"
 
+	exercisemodule "hackatom-opct-chain/x/exercise"
+	exercisemodulekeeper "hackatom-opct-chain/x/exercise/keeper"
+	exercisemoduletypes "hackatom-opct-chain/x/exercise/types"
 	hackatomopctchainmodule "hackatom-opct-chain/x/hackatomopctchain"
 	hackatomopctchainmodulekeeper "hackatom-opct-chain/x/hackatomopctchain/keeper"
 	hackatomopctchainmoduletypes "hackatom-opct-chain/x/hackatomopctchain/types"
@@ -158,6 +161,7 @@ var (
 		vesting.AppModuleBasic{},
 		monitoringp.AppModuleBasic{},
 		hackatomopctchainmodule.AppModuleBasic{},
+		exercisemodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -231,6 +235,8 @@ type App struct {
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 
 	HackatomopctchainKeeper hackatomopctchainmodulekeeper.Keeper
+
+	ExerciseKeeper exercisemodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -268,6 +274,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		hackatomopctchainmoduletypes.StoreKey,
+		exercisemoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -397,6 +404,14 @@ func New(
 	)
 	hackatomopctchainModule := hackatomopctchainmodule.NewAppModule(appCodec, app.HackatomopctchainKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.ExerciseKeeper = *exercisemodulekeeper.NewKeeper(
+		appCodec,
+		keys[exercisemoduletypes.StoreKey],
+		keys[exercisemoduletypes.MemStoreKey],
+		app.GetSubspace(exercisemoduletypes.ModuleName),
+	)
+	exerciseModule := exercisemodule.NewAppModule(appCodec, app.ExerciseKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -439,6 +454,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		hackatomopctchainModule,
+		exerciseModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -467,6 +483,7 @@ func New(
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
 		hackatomopctchainmoduletypes.ModuleName,
+		exercisemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -491,6 +508,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
 		hackatomopctchainmoduletypes.ModuleName,
+		exercisemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -520,6 +538,7 @@ func New(
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
 		hackatomopctchainmoduletypes.ModuleName,
+		exercisemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -545,6 +564,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		hackatomopctchainModule,
+		exerciseModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -735,6 +755,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(hackatomopctchainmoduletypes.ModuleName)
+	paramsKeeper.Subspace(exercisemoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
