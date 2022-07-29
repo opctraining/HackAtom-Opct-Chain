@@ -15,6 +15,9 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_exercise"
+
+	ExerciseKey      = "exercise:"
+	ExerciseCountKey = "exercise-count:"
 )
 
 func KeyPrefix(p string) []byte {

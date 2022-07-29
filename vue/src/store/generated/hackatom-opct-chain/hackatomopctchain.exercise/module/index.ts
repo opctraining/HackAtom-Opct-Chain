@@ -4,9 +4,11 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgCreateExercise } from "./types/exercise/tx";
 
 
 const types = [
+  ["/hackatomopctchain.exercise.MsgCreateExercise", MsgCreateExercise],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -39,6 +41,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgCreateExercise: (data: MsgCreateExercise): EncodeObject => ({ typeUrl: "/hackatomopctchain.exercise.MsgCreateExercise", value: MsgCreateExercise.fromPartial( data ) }),
     
   };
 };
