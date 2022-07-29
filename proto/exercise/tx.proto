@@ -7,7 +7,20 @@ option go_package = "hackatom-opct-chain/x/exercise/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc CreateExercise(MsgCreateExercise) returns (MsgCreateExerciseResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateExercise {
+  string creator = 1;
+  string category = 2;
+  uint64 score = 3;
+  int64 starttime = 4;
+  int64 endtime = 5;
+}
+
+message MsgCreateExerciseResponse {
+  bool success = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
