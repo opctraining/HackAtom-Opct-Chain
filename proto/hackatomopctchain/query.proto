@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "hackatomopctchain/params.proto";
+import "hackatomopctchain/exercise.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "hackatom-opct-chain/x/hackatomopctchain/types";
@@ -15,6 +16,12 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/hackatom-opct-chain/hackatomopctchain/params";
   }
+
+  // Queries a list of Exercises items.
+  rpc Exercises(QueryExercisesRequest) returns (QueryExercisesResponse) {
+    option (google.api.http).get = "/hackatom-opct-chain/hackatomopctchain/exercises";
+  }
+
   // this line is used by starport scaffolding # 2
 }
 
@@ -25,6 +32,16 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryExercisesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryExercisesResponse {
+  repeated Exercise Exercise = 1;
+
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
