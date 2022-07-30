@@ -22,6 +22,8 @@ func CmdCreateChallenge() *cobra.Command {
 			argDate := args[1]
 			argUri := args[2]
 
+			date, err := strconv.ParseInt(argDate, 10, 64)
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -30,7 +32,7 @@ func CmdCreateChallenge() *cobra.Command {
 			msg := types.NewMsgCreateChallenge(
 				clientCtx.GetFromAddress().String(),
 				argCategory,
-				argDate,
+				date,
 				argUri,
 			)
 			if err := msg.ValidateBasic(); err != nil {
