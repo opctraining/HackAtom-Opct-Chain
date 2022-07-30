@@ -34,6 +34,9 @@ export interface HackatomopctchainExercise {
 
   /** @format int64 */
   endTime?: string;
+
+  /** @format uint64 */
+  challengeid?: string;
 }
 
 export interface HackatomopctchainMsgCreateChallengeResponse {

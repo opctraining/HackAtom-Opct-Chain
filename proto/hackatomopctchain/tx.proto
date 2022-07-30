@@ -18,6 +18,7 @@ message MsgDoneOpct {
   int32 score = 3;
   int64 starttime = 4;
   int64 endtime = 5;
+  uint64 challengeid = 6;
 }
 
 message MsgDoneOpctResponse {
