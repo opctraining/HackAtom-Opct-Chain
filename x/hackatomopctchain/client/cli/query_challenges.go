@@ -19,6 +19,8 @@ func CmdChallenges() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDate := args[0]
 
+			date, err := strconv.ParseInt(reqDate, 10, 64)
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -28,7 +30,7 @@ func CmdChallenges() *cobra.Command {
 
 			params := &types.QueryChallengesRequest{
 
-				Date: reqDate,
+				Date: date,
 			}
 
 			res, err := queryClient.Challenges(cmd.Context(), params)

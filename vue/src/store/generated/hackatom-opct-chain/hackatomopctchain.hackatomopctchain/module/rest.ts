@@ -9,6 +9,17 @@
  * ---------------------------------------------------------------
  */
 
+export interface HackatomopctchainChallenge {
+  /** @format uint64 */
+  id?: string;
+  creator?: string;
+  category?: string;
+
+  /** @format int64 */
+  date?: string;
+  uri?: string;
+}
+
 export interface HackatomopctchainExercise {
   /** @format uint64 */
   id?: string;
@@ -38,9 +49,18 @@ export type HackatomopctchainMsgDoneOpctResponse = object;
 export type HackatomopctchainParams = object;
 
 export interface HackatomopctchainQueryChallengesResponse {
-  category?: string;
-  date?: string;
-  uri?: string;
+  Challenge?: HackatomopctchainChallenge[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
 }
 
 export interface HackatomopctchainQueryExercisesResponse {
@@ -344,10 +364,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @summary Queries a list of Challenges items.
    * @request GET:/hackatom-opct-chain/hackatomopctchain/challenges/{date}
    */
-  queryChallenges = (date: string, params: RequestParams = {}) =>
+  queryChallenges = (
+    date: string,
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
     this.request<HackatomopctchainQueryChallengesResponse, RpcStatus>({
       path: `/hackatom-opct-chain/hackatomopctchain/challenges/${date}`,
       method: "GET",
+      query: query,
       format: "json",
       ...params,
     });

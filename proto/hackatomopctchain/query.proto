@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "hackatomopctchain/params.proto";
 import "hackatomopctchain/exercise.proto";
+import "hackatomopctchain/challenge.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "hackatom-opct-chain/x/hackatomopctchain/types";
@@ -50,13 +51,15 @@ message QueryExercisesResponse {
 }
 
 message QueryChallengesRequest {
-  string date = 1;
+  int64 date = 1;
+  
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
 message QueryChallengesResponse {
-  string category = 1;
-  string date = 2;
-  string uri = 3;
+  repeated Challenge Challenge = 1;
+
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
