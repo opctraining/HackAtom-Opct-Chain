@@ -19,8 +19,14 @@ const (
 	ExerciseKey      = "exercise:"
 	ExerciseCountKey = "exercise-count:"
 
-	ChallengeKey      = "challenge:"
-	ChallengeCountKey = "challenge-count:"
+	ChallengeKey           = "challenge:"
+	ChallengeCountKey      = "challenge-count:"
+	ChallengeAttendanceKey = "challenge-attendance:"
+
+	BadgeMetaKey      = "badge-meta:"
+	BadgeNFTKey       = "badge-nft:"
+	BadgeMetaCountKey = "badge-meta-count:"
+	BadgeNFTCountKey  = "badge-nft-count:"
 )
 
 func KeyPrefix(p string) []byte {

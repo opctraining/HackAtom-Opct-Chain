@@ -18,6 +18,9 @@ export interface HackatomopctchainChallenge {
   /** @format int64 */
   date?: string;
   uri?: string;
+
+  /** @format uint64 */
+  rewardId?: string;
 }
 
 export interface HackatomopctchainExercise {
@@ -355,7 +358,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title hackatomopctchain/challenge.proto
+ * @title hackatomopctchain/badge.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
