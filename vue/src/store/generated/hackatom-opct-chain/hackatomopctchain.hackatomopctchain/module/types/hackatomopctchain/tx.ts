@@ -14,6 +14,15 @@ export interface MsgDoneOpct {
 
 export interface MsgDoneOpctResponse {}
 
+export interface MsgCreateChallenge {
+  creator: string;
+  category: string;
+  date: string;
+  uri: string;
+}
+
+export interface MsgCreateChallengeResponse {}
+
 const baseMsgDoneOpct: object = {
   creator: "",
   category: "",
@@ -181,10 +190,179 @@ export const MsgDoneOpctResponse = {
   },
 };
 
+const baseMsgCreateChallenge: object = {
+  creator: "",
+  category: "",
+  date: "",
+  uri: "",
+};
+
+export const MsgCreateChallenge = {
+  encode(
+    message: MsgCreateChallenge,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.category !== "") {
+      writer.uint32(18).string(message.category);
+    }
+    if (message.date !== "") {
+      writer.uint32(26).string(message.date);
+    }
+    if (message.uri !== "") {
+      writer.uint32(34).string(message.uri);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateChallenge {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreateChallenge } as MsgCreateChallenge;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.category = reader.string();
+          break;
+        case 3:
+          message.date = reader.string();
+          break;
+        case 4:
+          message.uri = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateChallenge {
+    const message = { ...baseMsgCreateChallenge } as MsgCreateChallenge;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.category !== undefined && object.category !== null) {
+      message.category = String(object.category);
+    } else {
+      message.category = "";
+    }
+    if (object.date !== undefined && object.date !== null) {
+      message.date = String(object.date);
+    } else {
+      message.date = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateChallenge): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.category !== undefined && (obj.category = message.category);
+    message.date !== undefined && (obj.date = message.date);
+    message.uri !== undefined && (obj.uri = message.uri);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgCreateChallenge>): MsgCreateChallenge {
+    const message = { ...baseMsgCreateChallenge } as MsgCreateChallenge;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.category !== undefined && object.category !== null) {
+      message.category = object.category;
+    } else {
+      message.category = "";
+    }
+    if (object.date !== undefined && object.date !== null) {
+      message.date = object.date;
+    } else {
+      message.date = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateChallengeResponse: object = {};
+
+export const MsgCreateChallengeResponse = {
+  encode(
+    _: MsgCreateChallengeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateChallengeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateChallengeResponse,
+    } as MsgCreateChallengeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateChallengeResponse {
+    const message = {
+      ...baseMsgCreateChallengeResponse,
+    } as MsgCreateChallengeResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCreateChallengeResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCreateChallengeResponse>
+  ): MsgCreateChallengeResponse {
+    const message = {
+      ...baseMsgCreateChallengeResponse,
+    } as MsgCreateChallengeResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DoneOpct(request: MsgDoneOpct): Promise<MsgDoneOpctResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreateChallenge(
+    request: MsgCreateChallenge
+  ): Promise<MsgCreateChallengeResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -200,6 +378,20 @@ export class MsgClientImpl implements Msg {
       data
     );
     return promise.then((data) => MsgDoneOpctResponse.decode(new Reader(data)));
+  }
+
+  CreateChallenge(
+    request: MsgCreateChallenge
+  ): Promise<MsgCreateChallengeResponse> {
+    const data = MsgCreateChallenge.encode(request).finish();
+    const promise = this.rpc.request(
+      "hackatomopctchain.hackatomopctchain.Msg",
+      "CreateChallenge",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateChallengeResponse.decode(new Reader(data))
+    );
   }
 }
 

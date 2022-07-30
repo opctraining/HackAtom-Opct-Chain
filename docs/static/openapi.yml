@@ -47290,6 +47290,8 @@ definitions:
       endTime:
         type: string
         format: int64
+  hackatomopctchain.hackatomopctchain.MsgCreateChallengeResponse:
+    type: object
   hackatomopctchain.hackatomopctchain.MsgDoneOpctResponse:
     type: object
   hackatomopctchain.hackatomopctchain.Params:
