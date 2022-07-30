@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+export type HackatomopctchainMsgDoneOpctResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

@@ -15,3 +15,5 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 }
 
 var _ types.MsgServer = msgServer{}
+
+// creater, category, score, starttime, endtime,
