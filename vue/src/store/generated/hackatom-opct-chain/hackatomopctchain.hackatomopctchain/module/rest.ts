@@ -227,7 +227,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title hackatomopctchain/genesis.proto
+ * @title hackatomopctchain/exercise.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {

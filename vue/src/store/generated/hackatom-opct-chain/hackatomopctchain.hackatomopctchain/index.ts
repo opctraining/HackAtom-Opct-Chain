@@ -1,9 +1,10 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { Exercise } from "./module/types/hackatomopctchain/exercise"
 import { Params } from "./module/types/hackatomopctchain/params"
 
 
-export { Params };
+export { Exercise, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -44,6 +45,7 @@ const getDefaultState = () => {
 				Params: {},
 				
 				_Structure: {
+						Exercise: getStructure(Exercise.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},

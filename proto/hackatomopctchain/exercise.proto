@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package hackatomopctchain.hackatomopctchain;
+
+option go_package = "hackatom-opct-chain/x/hackatomopctchain/types";
+
+message Exercise {
+  uint64 id = 1;
+  string creator = 2;
+  string category = 3;
+  int32 score = 4;
+  int64 startTime = 5;
+  int64 endTime = 6;
+}
