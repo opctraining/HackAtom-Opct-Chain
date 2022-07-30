@@ -14,15 +14,14 @@ var _ = strconv.Itoa(0)
 
 func CmdCreateExercise() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-exercise [address] [category] [score] [starttime] [endtime]",
+		Use:   "create-exercise [category] [score] [starttime] [endtime]",
 		Short: "Broadcast message createExercise",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAddress := args[0]
-			argCategory := args[1]
-			argScore := args[2]
-			argStarttime := args[3]
-			argEndtime := args[4]
+			argCategory := args[0]
+			argScore := args[1]
+			argStarttime := args[2]
+			argEndtime := args[3]
 			score, err := strconv.ParseUint(argScore, 10, 64)
 			startTime, err := strconv.ParseInt(argStarttime, 10, 64)
 			endTime, err := strconv.ParseInt(argEndtime, 10, 64)
@@ -33,7 +32,7 @@ func CmdCreateExercise() *cobra.Command {
 			}
 
 			msg := types.NewMsgCreateExercise(
-				argAddress,
+				clientCtx.GetFromAddress().String(),
 				argCategory,
 				score,
 				startTime,
