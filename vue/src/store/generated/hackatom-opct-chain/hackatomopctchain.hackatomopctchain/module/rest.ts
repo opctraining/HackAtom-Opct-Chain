@@ -25,6 +25,8 @@ export interface HackatomopctchainExercise {
   endTime?: string;
 }
 
+export type HackatomopctchainMsgCreateChallengeResponse = object;
+
 export type HackatomopctchainMsgDoneOpctResponse = object;
 
 /**

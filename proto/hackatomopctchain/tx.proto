@@ -8,6 +8,7 @@ option go_package = "hackatom-opct-chain/x/hackatomopctchain/types";
 // Msg defines the Msg service.
 service Msg {
       rpc DoneOpct(MsgDoneOpct) returns (MsgDoneOpctResponse);
+  rpc CreateChallenge(MsgCreateChallenge) returns (MsgCreateChallengeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -20,6 +21,16 @@ message MsgDoneOpct {
 }
 
 message MsgDoneOpctResponse {
+}
+
+message MsgCreateChallenge {
+  string creator = 1;
+  string category = 2;
+  string date = 3;
+  string uri = 4;
+}
+
+message MsgCreateChallengeResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
