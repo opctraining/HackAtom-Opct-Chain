@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "challenge/params.proto";
+import "challenge/challenge_info.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "hackatom-opct-chain/x/challenge/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/hackatom-opct-chain/challenge/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a ChallengeInfo by index.
+	rpc ChallengeInfo(QueryGetChallengeInfoRequest) returns (QueryGetChallengeInfoResponse) {
+		option (google.api.http).get = "/hackatom-opct-chain/challenge/challenge_info/{index}";
+	}
+
+	// Queries a list of ChallengeInfo items.
+	rpc ChallengeInfoAll(QueryAllChallengeInfoRequest) returns (QueryAllChallengeInfoResponse) {
+		option (google.api.http).get = "/hackatom-opct-chain/challenge/challenge_info";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetChallengeInfoRequest {
+	  string index = 1;
+
+}
+
+message QueryGetChallengeInfoResponse {
+	ChallengeInfo challengeInfo = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllChallengeInfoRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllChallengeInfoResponse {
+	repeated ChallengeInfo challengeInfo = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

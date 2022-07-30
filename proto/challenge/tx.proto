@@ -1,13 +1,45 @@
 syntax = "proto3";
 package hackatomopctchain.challenge;
 
+import "challenge/challenge_info.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "hackatom-opct-chain/x/challenge/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc CreateChallengeInfo(MsgCreateChallengeInfo) returns (MsgCreateChallengeInfoResponse);
+  rpc UpdateChallengeInfo(MsgUpdateChallengeInfo) returns (MsgUpdateChallengeInfoResponse);
+  rpc DeleteChallengeInfo(MsgDeleteChallengeInfo) returns (MsgDeleteChallengeInfoResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
 }
+
+message MsgCreateChallengeInfo {
+  string creator = 1;
+  string index = 2;
+
+  string name = 3;
+  string category = 4;
+  string score = 5;
+  string rewardId = 6;
+}
+message MsgCreateChallengeInfoResponse {}
+
+message MsgUpdateChallengeInfo {
+  string creator = 1;
+  string index = 2;
+
+  string name = 3;
+  string category = 4;
+  string score = 5;
+  string rewardId = 6;
+}
+message MsgUpdateChallengeInfoResponse {}
+
+message MsgDeleteChallengeInfo {
+  string creator = 1;
+  string index = 2;
+}
+message MsgDeleteChallengeInfoResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package hackatomopctchain.challenge;
+
+option go_package = "hackatom-opct-chain/x/challenge/types";
+
+message ChallengeInfo {
+  string index = 1; 
+  string name = 2; 
+  string category = 3; 
+  string score = 4; 
+  string rewardId = 5; 
+  string creator = 6;
+}
+

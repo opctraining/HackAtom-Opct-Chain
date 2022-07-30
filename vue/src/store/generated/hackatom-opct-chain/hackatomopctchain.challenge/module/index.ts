@@ -4,9 +4,15 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgCreateChallengeInfo } from "./types/challenge/tx";
+import { MsgUpdateChallengeInfo } from "./types/challenge/tx";
+import { MsgDeleteChallengeInfo } from "./types/challenge/tx";
 
 
 const types = [
+  ["/hackatomopctchain.challenge.MsgCreateChallengeInfo", MsgCreateChallengeInfo],
+  ["/hackatomopctchain.challenge.MsgUpdateChallengeInfo", MsgUpdateChallengeInfo],
+  ["/hackatomopctchain.challenge.MsgDeleteChallengeInfo", MsgDeleteChallengeInfo],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -39,6 +45,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgCreateChallengeInfo: (data: MsgCreateChallengeInfo): EncodeObject => ({ typeUrl: "/hackatomopctchain.challenge.MsgCreateChallengeInfo", value: MsgCreateChallengeInfo.fromPartial( data ) }),
+    msgUpdateChallengeInfo: (data: MsgUpdateChallengeInfo): EncodeObject => ({ typeUrl: "/hackatomopctchain.challenge.MsgUpdateChallengeInfo", value: MsgUpdateChallengeInfo.fromPartial( data ) }),
+    msgDeleteChallengeInfo: (data: MsgDeleteChallengeInfo): EncodeObject => ({ typeUrl: "/hackatomopctchain.challenge.MsgDeleteChallengeInfo", value: MsgDeleteChallengeInfo.fromPartial( data ) }),
     
   };
 };
