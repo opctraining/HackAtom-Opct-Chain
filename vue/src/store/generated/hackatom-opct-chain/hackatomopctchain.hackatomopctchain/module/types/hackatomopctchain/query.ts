@@ -27,6 +27,16 @@ export interface QueryExercisesResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryChallengesRequest {
+  date: string;
+}
+
+export interface QueryChallengesResponse {
+  category: string;
+  date: string;
+  uri: string;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -279,12 +289,174 @@ export const QueryExercisesResponse = {
   },
 };
 
+const baseQueryChallengesRequest: object = { date: "" };
+
+export const QueryChallengesRequest = {
+  encode(
+    message: QueryChallengesRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.date !== "") {
+      writer.uint32(10).string(message.date);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryChallengesRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryChallengesRequest } as QueryChallengesRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.date = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryChallengesRequest {
+    const message = { ...baseQueryChallengesRequest } as QueryChallengesRequest;
+    if (object.date !== undefined && object.date !== null) {
+      message.date = String(object.date);
+    } else {
+      message.date = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryChallengesRequest): unknown {
+    const obj: any = {};
+    message.date !== undefined && (obj.date = message.date);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryChallengesRequest>
+  ): QueryChallengesRequest {
+    const message = { ...baseQueryChallengesRequest } as QueryChallengesRequest;
+    if (object.date !== undefined && object.date !== null) {
+      message.date = object.date;
+    } else {
+      message.date = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryChallengesResponse: object = { category: "", date: "", uri: "" };
+
+export const QueryChallengesResponse = {
+  encode(
+    message: QueryChallengesResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.category !== "") {
+      writer.uint32(10).string(message.category);
+    }
+    if (message.date !== "") {
+      writer.uint32(18).string(message.date);
+    }
+    if (message.uri !== "") {
+      writer.uint32(26).string(message.uri);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryChallengesResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryChallengesResponse,
+    } as QueryChallengesResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.category = reader.string();
+          break;
+        case 2:
+          message.date = reader.string();
+          break;
+        case 3:
+          message.uri = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryChallengesResponse {
+    const message = {
+      ...baseQueryChallengesResponse,
+    } as QueryChallengesResponse;
+    if (object.category !== undefined && object.category !== null) {
+      message.category = String(object.category);
+    } else {
+      message.category = "";
+    }
+    if (object.date !== undefined && object.date !== null) {
+      message.date = String(object.date);
+    } else {
+      message.date = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryChallengesResponse): unknown {
+    const obj: any = {};
+    message.category !== undefined && (obj.category = message.category);
+    message.date !== undefined && (obj.date = message.date);
+    message.uri !== undefined && (obj.uri = message.uri);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryChallengesResponse>
+  ): QueryChallengesResponse {
+    const message = {
+      ...baseQueryChallengesResponse,
+    } as QueryChallengesResponse;
+    if (object.category !== undefined && object.category !== null) {
+      message.category = object.category;
+    } else {
+      message.category = "";
+    }
+    if (object.date !== undefined && object.date !== null) {
+      message.date = object.date;
+    } else {
+      message.date = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a list of Exercises items. */
   Exercises(request: QueryExercisesRequest): Promise<QueryExercisesResponse>;
+  /** Queries a list of Challenges items. */
+  Challenges(request: QueryChallengesRequest): Promise<QueryChallengesResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -311,6 +483,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryExercisesResponse.decode(new Reader(data))
+    );
+  }
+
+  Challenges(
+    request: QueryChallengesRequest
+  ): Promise<QueryChallengesResponse> {
+    const data = QueryChallengesRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "hackatomopctchain.hackatomopctchain.Query",
+      "Challenges",
+      data
+    );
+    return promise.then((data) =>
+      QueryChallengesResponse.decode(new Reader(data))
     );
   }
 }
