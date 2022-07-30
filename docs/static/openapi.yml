@@ -19784,6 +19784,9 @@ paths:
                       format: int64
                     uri:
                       type: string
+                    rewardId:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -19878,16 +19881,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -20016,16 +20009,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -47425,6 +47408,9 @@ definitions:
         format: int64
       uri:
         type: string
+      rewardId:
+        type: string
+        format: uint64
   hackatomopctchain.hackatomopctchain.Exercise:
     type: object
     properties:
@@ -47478,6 +47464,9 @@ definitions:
               format: int64
             uri:
               type: string
+            rewardId:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:

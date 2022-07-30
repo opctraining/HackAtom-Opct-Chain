@@ -4,11 +4,15 @@ package hackatomopctchain.hackatomopctchain;
 
 option go_package = "hackatom-opct-chain/x/hackatomopctchain/types";
 
-message Challenge {
+message BadgeMeta {
   uint64 id = 1;
-  string creator = 2;
+  string name = 2;
   string category = 3;
-  int64 date = 4;
-  string uri = 5;
-  uint64 rewardId = 6;
+  string uri = 4;
+}
+
+message BadgeNFT {
+  uint64 id = 1;
+  uint64 badgeId = 2;
+  string owner = 3;
 }
