@@ -8,7 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"hackatom-opct-chain/x/exercise/types"
+	"hackatom-opct-chain/x/badge/types"
 )
 
 type (
@@ -33,6 +33,7 @@ func NewKeeper(
 	}
 
 	return &Keeper{
+
 		cdc:        cdc,
 		storeKey:   storeKey,
 		memKey:     memKey,

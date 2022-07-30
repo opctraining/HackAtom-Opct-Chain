@@ -100,6 +100,9 @@ import (
 
 	"hackatom-opct-chain/docs"
 
+	badgemodule "hackatom-opct-chain/x/badge"
+	badgemodulekeeper "hackatom-opct-chain/x/badge/keeper"
+	badgemoduletypes "hackatom-opct-chain/x/badge/types"
 	challengemodule "hackatom-opct-chain/x/challenge"
 	challengemodulekeeper "hackatom-opct-chain/x/challenge/keeper"
 	challengemoduletypes "hackatom-opct-chain/x/challenge/types"
@@ -166,6 +169,7 @@ var (
 		hackatomopctchainmodule.AppModuleBasic{},
 		exercisemodule.AppModuleBasic{},
 		challengemodule.AppModuleBasic{},
+		badgemodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -243,6 +247,8 @@ type App struct {
 	ExerciseKeeper exercisemodulekeeper.Keeper
 
 	ChallengeKeeper challengemodulekeeper.Keeper
+
+	BadgeKeeper badgemodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -282,6 +288,7 @@ func New(
 		hackatomopctchainmoduletypes.StoreKey,
 		exercisemoduletypes.StoreKey,
 		challengemoduletypes.StoreKey,
+		badgemoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -427,6 +434,14 @@ func New(
 	)
 	challengeModule := challengemodule.NewAppModule(appCodec, app.ChallengeKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.BadgeKeeper = *badgemodulekeeper.NewKeeper(
+		appCodec,
+		keys[badgemoduletypes.StoreKey],
+		keys[badgemoduletypes.MemStoreKey],
+		app.GetSubspace(badgemoduletypes.ModuleName),
+	)
+	badgeModule := badgemodule.NewAppModule(appCodec, app.BadgeKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -471,6 +486,7 @@ func New(
 		hackatomopctchainModule,
 		exerciseModule,
 		challengeModule,
+		badgeModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -501,6 +517,7 @@ func New(
 		hackatomopctchainmoduletypes.ModuleName,
 		exercisemoduletypes.ModuleName,
 		challengemoduletypes.ModuleName,
+		badgemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -527,6 +544,7 @@ func New(
 		hackatomopctchainmoduletypes.ModuleName,
 		exercisemoduletypes.ModuleName,
 		challengemoduletypes.ModuleName,
+		badgemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -558,6 +576,7 @@ func New(
 		hackatomopctchainmoduletypes.ModuleName,
 		exercisemoduletypes.ModuleName,
 		challengemoduletypes.ModuleName,
+		badgemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -585,6 +604,7 @@ func New(
 		hackatomopctchainModule,
 		exerciseModule,
 		challengeModule,
+		badgeModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -777,6 +797,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(hackatomopctchainmoduletypes.ModuleName)
 	paramsKeeper.Subspace(exercisemoduletypes.ModuleName)
 	paramsKeeper.Subspace(challengemoduletypes.ModuleName)
+	paramsKeeper.Subspace(badgemoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
