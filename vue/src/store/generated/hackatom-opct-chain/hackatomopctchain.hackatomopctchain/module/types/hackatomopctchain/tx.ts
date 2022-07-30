@@ -1,14 +1,15 @@
 /* eslint-disable */
-import { Reader, Writer } from "protobufjs/minimal";
+import { Reader, util, configure, Writer } from "protobufjs/minimal";
+import * as Long from "long";
 
 export const protobufPackage = "hackatomopctchain.hackatomopctchain";
 
 export interface MsgDoneOpct {
   creator: string;
   category: string;
-  score: string;
-  starttime: string;
-  endtime: string;
+  score: number;
+  starttime: number;
+  endtime: number;
 }
 
 export interface MsgDoneOpctResponse {}
@@ -16,9 +17,9 @@ export interface MsgDoneOpctResponse {}
 const baseMsgDoneOpct: object = {
   creator: "",
   category: "",
-  score: "",
-  starttime: "",
-  endtime: "",
+  score: 0,
+  starttime: 0,
+  endtime: 0,
 };
 
 export const MsgDoneOpct = {
@@ -29,14 +30,14 @@ export const MsgDoneOpct = {
     if (message.category !== "") {
       writer.uint32(18).string(message.category);
     }
-    if (message.score !== "") {
-      writer.uint32(26).string(message.score);
+    if (message.score !== 0) {
+      writer.uint32(24).int32(message.score);
     }
-    if (message.starttime !== "") {
-      writer.uint32(34).string(message.starttime);
+    if (message.starttime !== 0) {
+      writer.uint32(32).int64(message.starttime);
     }
-    if (message.endtime !== "") {
-      writer.uint32(42).string(message.endtime);
+    if (message.endtime !== 0) {
+      writer.uint32(40).int64(message.endtime);
     }
     return writer;
   },
@@ -55,13 +56,13 @@ export const MsgDoneOpct = {
           message.category = reader.string();
           break;
         case 3:
-          message.score = reader.string();
+          message.score = reader.int32();
           break;
         case 4:
-          message.starttime = reader.string();
+          message.starttime = longToNumber(reader.int64() as Long);
           break;
         case 5:
-          message.endtime = reader.string();
+          message.endtime = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -84,19 +85,19 @@ export const MsgDoneOpct = {
       message.category = "";
     }
     if (object.score !== undefined && object.score !== null) {
-      message.score = String(object.score);
+      message.score = Number(object.score);
     } else {
-      message.score = "";
+      message.score = 0;
     }
     if (object.starttime !== undefined && object.starttime !== null) {
-      message.starttime = String(object.starttime);
+      message.starttime = Number(object.starttime);
     } else {
-      message.starttime = "";
+      message.starttime = 0;
     }
     if (object.endtime !== undefined && object.endtime !== null) {
-      message.endtime = String(object.endtime);
+      message.endtime = Number(object.endtime);
     } else {
-      message.endtime = "";
+      message.endtime = 0;
     }
     return message;
   },
@@ -126,17 +127,17 @@ export const MsgDoneOpct = {
     if (object.score !== undefined && object.score !== null) {
       message.score = object.score;
     } else {
-      message.score = "";
+      message.score = 0;
     }
     if (object.starttime !== undefined && object.starttime !== null) {
       message.starttime = object.starttime;
     } else {
-      message.starttime = "";
+      message.starttime = 0;
     }
     if (object.endtime !== undefined && object.endtime !== null) {
       message.endtime = object.endtime;
     } else {
-      message.endtime = "";
+      message.endtime = 0;
     }
     return message;
   },
@@ -210,6 +211,16 @@ interface Rpc {
   ): Promise<Uint8Array>;
 }
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
   ? T
@@ -220,3 +231,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}

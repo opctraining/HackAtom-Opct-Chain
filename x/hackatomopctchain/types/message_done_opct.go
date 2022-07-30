@@ -9,7 +9,7 @@ const TypeMsgDoneOpct = "done_opct"
 
 var _ sdk.Msg = &MsgDoneOpct{}
 
-func NewMsgDoneOpct(creator string, category string, score string, starttime string, endtime string) *MsgDoneOpct {
+func NewMsgDoneOpct(creator string, category string, score int32, starttime int64, endtime int64) *MsgDoneOpct {
 	return &MsgDoneOpct{
 		Creator:   creator,
 		Category:  category,
