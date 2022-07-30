@@ -11,11 +11,12 @@ func (k msgServer) DoneOpct(goCtx context.Context, msg *types.MsgDoneOpct) (*typ
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	var exercise = types.Exercise{
-		Creator:   msg.Creator,
-		Category:  msg.Category,
-		Score:     msg.Score,
-		StartTime: msg.Starttime,
-		EndTime:   msg.Endtime,
+		Creator:     msg.Creator,
+		Category:    msg.Category,
+		Score:       msg.Score,
+		StartTime:   msg.Starttime,
+		EndTime:     msg.Endtime,
+		Challengeid: msg.Challengeid,
 	}
 	_ = k.StoreExercise(ctx, exercise)
 

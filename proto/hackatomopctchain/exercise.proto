@@ -11,4 +11,5 @@ message Exercise {
   int32 score = 4;
   int64 startTime = 5;
   int64 endTime = 6;
+  uint64 challengeid = 7;
 }

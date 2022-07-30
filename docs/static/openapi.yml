@@ -19924,6 +19924,9 @@ paths:
                     endTime:
                       type: string
                       format: int64
+                    challengeid:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -47441,6 +47444,9 @@ definitions:
       endTime:
         type: string
         format: int64
+      challengeid:
+        type: string
+        format: uint64
   hackatomopctchain.hackatomopctchain.MsgCreateChallengeResponse:
     type: object
     properties:
@@ -47521,6 +47527,9 @@ definitions:
             endTime:
               type: string
               format: int64
+            challengeid:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:

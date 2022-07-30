@@ -11,6 +11,7 @@ export interface Exercise {
   score: number;
   startTime: number;
   endTime: number;
+  challengeid: number;
 }
 
 const baseExercise: object = {
@@ -20,6 +21,7 @@ const baseExercise: object = {
   score: 0,
   startTime: 0,
   endTime: 0,
+  challengeid: 0,
 };
 
 export const Exercise = {
@@ -41,6 +43,9 @@ export const Exercise = {
     }
     if (message.endTime !== 0) {
       writer.uint32(48).int64(message.endTime);
+    }
+    if (message.challengeid !== 0) {
+      writer.uint32(56).uint64(message.challengeid);
     }
     return writer;
   },
@@ -69,6 +74,9 @@ export const Exercise = {
           break;
         case 6:
           message.endTime = longToNumber(reader.int64() as Long);
+          break;
+        case 7:
+          message.challengeid = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -110,6 +118,11 @@ export const Exercise = {
     } else {
       message.endTime = 0;
     }
+    if (object.challengeid !== undefined && object.challengeid !== null) {
+      message.challengeid = Number(object.challengeid);
+    } else {
+      message.challengeid = 0;
+    }
     return message;
   },
 
@@ -121,6 +134,8 @@ export const Exercise = {
     message.score !== undefined && (obj.score = message.score);
     message.startTime !== undefined && (obj.startTime = message.startTime);
     message.endTime !== undefined && (obj.endTime = message.endTime);
+    message.challengeid !== undefined &&
+      (obj.challengeid = message.challengeid);
     return obj;
   },
 
@@ -155,6 +170,11 @@ export const Exercise = {
       message.endTime = object.endTime;
     } else {
       message.endTime = 0;
+    }
+    if (object.challengeid !== undefined && object.challengeid !== null) {
+      message.challengeid = object.challengeid;
+    } else {
+      message.challengeid = 0;
     }
     return message;
   },

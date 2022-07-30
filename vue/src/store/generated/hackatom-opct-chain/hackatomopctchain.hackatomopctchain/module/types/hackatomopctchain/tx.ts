@@ -10,6 +10,7 @@ export interface MsgDoneOpct {
   score: number;
   starttime: number;
   endtime: number;
+  challengeid: number;
 }
 
 export interface MsgDoneOpctResponse {}
@@ -31,6 +32,7 @@ const baseMsgDoneOpct: object = {
   score: 0,
   starttime: 0,
   endtime: 0,
+  challengeid: 0,
 };
 
 export const MsgDoneOpct = {
@@ -49,6 +51,9 @@ export const MsgDoneOpct = {
     }
     if (message.endtime !== 0) {
       writer.uint32(40).int64(message.endtime);
+    }
+    if (message.challengeid !== 0) {
+      writer.uint32(48).uint64(message.challengeid);
     }
     return writer;
   },
@@ -74,6 +79,9 @@ export const MsgDoneOpct = {
           break;
         case 5:
           message.endtime = longToNumber(reader.int64() as Long);
+          break;
+        case 6:
+          message.challengeid = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -110,6 +118,11 @@ export const MsgDoneOpct = {
     } else {
       message.endtime = 0;
     }
+    if (object.challengeid !== undefined && object.challengeid !== null) {
+      message.challengeid = Number(object.challengeid);
+    } else {
+      message.challengeid = 0;
+    }
     return message;
   },
 
@@ -120,6 +133,8 @@ export const MsgDoneOpct = {
     message.score !== undefined && (obj.score = message.score);
     message.starttime !== undefined && (obj.starttime = message.starttime);
     message.endtime !== undefined && (obj.endtime = message.endtime);
+    message.challengeid !== undefined &&
+      (obj.challengeid = message.challengeid);
     return obj;
   },
 
@@ -149,6 +164,11 @@ export const MsgDoneOpct = {
       message.endtime = object.endtime;
     } else {
       message.endtime = 0;
+    }
+    if (object.challengeid !== undefined && object.challengeid !== null) {
+      message.challengeid = object.challengeid;
+    } else {
+      message.challengeid = 0;
     }
     return message;
   },
