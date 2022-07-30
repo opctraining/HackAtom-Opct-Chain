@@ -1,11 +1,13 @@
 /* eslint-disable */
-import { Reader, Writer } from "protobufjs/minimal";
+import { Reader, util, configure, Writer } from "protobufjs/minimal";
+import * as Long from "long";
 import { Params } from "../hackatomopctchain/params";
 import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
 import { Exercise } from "../hackatomopctchain/exercise";
+import { Challenge } from "../hackatomopctchain/challenge";
 
 export const protobufPackage = "hackatomopctchain.hackatomopctchain";
 
@@ -28,13 +30,13 @@ export interface QueryExercisesResponse {
 }
 
 export interface QueryChallengesRequest {
-  date: string;
+  date: number;
+  pagination: PageRequest | undefined;
 }
 
 export interface QueryChallengesResponse {
-  category: string;
-  date: string;
-  uri: string;
+  Challenge: Challenge[];
+  pagination: PageResponse | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -289,15 +291,18 @@ export const QueryExercisesResponse = {
   },
 };
 
-const baseQueryChallengesRequest: object = { date: "" };
+const baseQueryChallengesRequest: object = { date: 0 };
 
 export const QueryChallengesRequest = {
   encode(
     message: QueryChallengesRequest,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.date !== "") {
-      writer.uint32(10).string(message.date);
+    if (message.date !== 0) {
+      writer.uint32(8).int64(message.date);
+    }
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -310,7 +315,10 @@ export const QueryChallengesRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.date = reader.string();
+          message.date = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -323,9 +331,14 @@ export const QueryChallengesRequest = {
   fromJSON(object: any): QueryChallengesRequest {
     const message = { ...baseQueryChallengesRequest } as QueryChallengesRequest;
     if (object.date !== undefined && object.date !== null) {
-      message.date = String(object.date);
+      message.date = Number(object.date);
     } else {
-      message.date = "";
+      message.date = 0;
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
     }
     return message;
   },
@@ -333,6 +346,10 @@ export const QueryChallengesRequest = {
   toJSON(message: QueryChallengesRequest): unknown {
     const obj: any = {};
     message.date !== undefined && (obj.date = message.date);
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
     return obj;
   },
 
@@ -343,27 +360,32 @@ export const QueryChallengesRequest = {
     if (object.date !== undefined && object.date !== null) {
       message.date = object.date;
     } else {
-      message.date = "";
+      message.date = 0;
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
     }
     return message;
   },
 };
 
-const baseQueryChallengesResponse: object = { category: "", date: "", uri: "" };
+const baseQueryChallengesResponse: object = {};
 
 export const QueryChallengesResponse = {
   encode(
     message: QueryChallengesResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.category !== "") {
-      writer.uint32(10).string(message.category);
+    for (const v of message.Challenge) {
+      Challenge.encode(v!, writer.uint32(10).fork()).ldelim();
     }
-    if (message.date !== "") {
-      writer.uint32(18).string(message.date);
-    }
-    if (message.uri !== "") {
-      writer.uint32(26).string(message.uri);
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -374,17 +396,15 @@ export const QueryChallengesResponse = {
     const message = {
       ...baseQueryChallengesResponse,
     } as QueryChallengesResponse;
+    message.Challenge = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.category = reader.string();
+          message.Challenge.push(Challenge.decode(reader, reader.uint32()));
           break;
         case 2:
-          message.date = reader.string();
-          break;
-        case 3:
-          message.uri = reader.string();
+          message.pagination = PageResponse.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -398,29 +418,33 @@ export const QueryChallengesResponse = {
     const message = {
       ...baseQueryChallengesResponse,
     } as QueryChallengesResponse;
-    if (object.category !== undefined && object.category !== null) {
-      message.category = String(object.category);
-    } else {
-      message.category = "";
+    message.Challenge = [];
+    if (object.Challenge !== undefined && object.Challenge !== null) {
+      for (const e of object.Challenge) {
+        message.Challenge.push(Challenge.fromJSON(e));
+      }
     }
-    if (object.date !== undefined && object.date !== null) {
-      message.date = String(object.date);
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
     } else {
-      message.date = "";
-    }
-    if (object.uri !== undefined && object.uri !== null) {
-      message.uri = String(object.uri);
-    } else {
-      message.uri = "";
+      message.pagination = undefined;
     }
     return message;
   },
 
   toJSON(message: QueryChallengesResponse): unknown {
     const obj: any = {};
-    message.category !== undefined && (obj.category = message.category);
-    message.date !== undefined && (obj.date = message.date);
-    message.uri !== undefined && (obj.uri = message.uri);
+    if (message.Challenge) {
+      obj.Challenge = message.Challenge.map((e) =>
+        e ? Challenge.toJSON(e) : undefined
+      );
+    } else {
+      obj.Challenge = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
     return obj;
   },
 
@@ -430,20 +454,16 @@ export const QueryChallengesResponse = {
     const message = {
       ...baseQueryChallengesResponse,
     } as QueryChallengesResponse;
-    if (object.category !== undefined && object.category !== null) {
-      message.category = object.category;
-    } else {
-      message.category = "";
+    message.Challenge = [];
+    if (object.Challenge !== undefined && object.Challenge !== null) {
+      for (const e of object.Challenge) {
+        message.Challenge.push(Challenge.fromPartial(e));
+      }
     }
-    if (object.date !== undefined && object.date !== null) {
-      message.date = object.date;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
     } else {
-      message.date = "";
-    }
-    if (object.uri !== undefined && object.uri !== null) {
-      message.uri = object.uri;
-    } else {
-      message.uri = "";
+      message.pagination = undefined;
     }
     return message;
   },
@@ -509,6 +529,16 @@ interface Rpc {
   ): Promise<Uint8Array>;
 }
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
   ? T
@@ -519,3 +549,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}
