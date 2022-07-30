@@ -23,6 +23,11 @@ func CmdDoneOpct() *cobra.Command {
 			argStarttime := args[2]
 			argEndtime := args[3]
 
+			score, err := strconv.ParseInt(argScore, 10, 32)
+			score32 := int32(score)
+			startTime, err := strconv.ParseInt(argStarttime, 10, 64)
+			endTime, err := strconv.ParseInt(argEndtime, 10, 64)
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -31,9 +36,9 @@ func CmdDoneOpct() *cobra.Command {
 			msg := types.NewMsgDoneOpct(
 				clientCtx.GetFromAddress().String(),
 				argCategory,
-				argScore,
-				argStarttime,
-				argEndtime,
+				score32,
+				startTime,
+				endTime,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

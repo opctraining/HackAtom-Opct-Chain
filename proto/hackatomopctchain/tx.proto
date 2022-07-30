@@ -14,9 +14,9 @@ service Msg {
 message MsgDoneOpct {
   string creator = 1;
   string category = 2;
-  string score = 3;
-  string starttime = 4;
-  string endtime = 5;
+  int32 score = 3;
+  int64 starttime = 4;
+  int64 endtime = 5;
 }
 
 message MsgDoneOpctResponse {
