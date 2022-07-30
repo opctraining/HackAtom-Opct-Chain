@@ -22,7 +22,12 @@ service Query {
     option (google.api.http).get = "/hackatom-opct-chain/hackatomopctchain/exercises";
   }
 
-  // this line is used by starport scaffolding # 2
+  // Queries a list of Challenges items.
+	rpc Challenges(QueryChallengesRequest) returns (QueryChallengesResponse) {
+		option (google.api.http).get = "/hackatom-opct-chain/hackatomopctchain/challenges/{date}";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -42,6 +47,16 @@ message QueryExercisesResponse {
   repeated Exercise Exercise = 1;
 
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryChallengesRequest {
+  string date = 1;
+}
+
+message QueryChallengesResponse {
+  string category = 1;
+  string date = 2;
+  string uri = 3;
 }
 
 // this line is used by starport scaffolding # 3

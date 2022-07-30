@@ -19757,6 +19757,47 @@ paths:
           format: int64
       tags:
         - Query
+  '/hackatom-opct-chain/hackatomopctchain/challenges/{date}':
+    get:
+      summary: Queries a list of Challenges items.
+      operationId: HackatomopctchainHackatomopctchainChallenges
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              category:
+                type: string
+              date:
+                type: string
+              uri:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: date
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /hackatom-opct-chain/hackatomopctchain/exercises:
     get:
       summary: Queries a list of Exercises items.
@@ -47301,6 +47342,15 @@ definitions:
   hackatomopctchain.hackatomopctchain.Params:
     type: object
     description: Params defines the parameters for the module.
+  hackatomopctchain.hackatomopctchain.QueryChallengesResponse:
+    type: object
+    properties:
+      category:
+        type: string
+      date:
+        type: string
+      uri:
+        type: string
   hackatomopctchain.hackatomopctchain.QueryExercisesResponse:
     type: object
     properties:

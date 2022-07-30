@@ -45,6 +45,7 @@ const getDefaultState = () => {
 	return {
 				Params: {},
 				Exercises: {},
+				Challenges: {},
 				
 				_Structure: {
 						Challenge: getStructure(Challenge.fromPartial({})),
@@ -89,6 +90,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Exercises[JSON.stringify(params)] ?? {}
+		},
+				getChallenges: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Challenges[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -172,21 +179,28 @@ export default {
 		},
 		
 		
-		async sendMsgCreateChallenge({ rootGetters }, { value, fee = [], memo = '' }) {
+		
+		
+		 		
+		
+		
+		async QueryChallenges({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreateChallenge(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryChallenges( key.date)).data
+				
+					
+				commit('QUERY', { query: 'Challenges', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryChallenges', payload: { options: { all }, params: {...key},query }})
+				return getters['getChallenges']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateChallenge:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateChallenge:Send Could not broadcast Tx: '+ e.message)
-				}
+				throw new Error('QueryClient:QueryChallenges API Node Unavailable. Could not perform query: ' + e.message)
+				
 			}
 		},
+		
+		
 		async sendMsgDoneOpct({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -202,20 +216,22 @@ export default {
 				}
 			}
 		},
-		
-		async MsgCreateChallenge({ rootGetters }, { value }) {
+		async sendMsgCreateChallenge({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgCreateChallenge(value)
-				return msg
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgCreateChallenge:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateChallenge:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgCreateChallenge:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgDoneOpct({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -226,6 +242,19 @@ export default {
 					throw new Error('TxClient:MsgDoneOpct:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgDoneOpct:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateChallenge({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateChallenge(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateChallenge:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateChallenge:Create Could not create message: ' + e.message)
 				}
 			}
 		},

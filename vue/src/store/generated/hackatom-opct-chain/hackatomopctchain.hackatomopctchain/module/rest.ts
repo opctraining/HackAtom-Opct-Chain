@@ -37,6 +37,12 @@ export type HackatomopctchainMsgDoneOpctResponse = object;
  */
 export type HackatomopctchainParams = object;
 
+export interface HackatomopctchainQueryChallengesResponse {
+  category?: string;
+  date?: string;
+  uri?: string;
+}
+
 export interface HackatomopctchainQueryExercisesResponse {
   Exercise?: HackatomopctchainExercise[];
 
@@ -330,6 +336,22 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryChallenges
+   * @summary Queries a list of Challenges items.
+   * @request GET:/hackatom-opct-chain/hackatomopctchain/challenges/{date}
+   */
+  queryChallenges = (date: string, params: RequestParams = {}) =>
+    this.request<HackatomopctchainQueryChallengesResponse, RpcStatus>({
+      path: `/hackatom-opct-chain/hackatomopctchain/challenges/${date}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
