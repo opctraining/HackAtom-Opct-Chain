@@ -18,6 +18,9 @@ const (
 
 	ExerciseKey      = "exercise:"
 	ExerciseCountKey = "exercise-count:"
+
+	ChallengeKey      = "challenge:"
+	ChallengeCountKey = "challenge-count:"
 )
 
 func KeyPrefix(p string) []byte {

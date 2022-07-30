@@ -9,7 +9,7 @@ const TypeMsgCreateChallenge = "create_challenge"
 
 var _ sdk.Msg = &MsgCreateChallenge{}
 
-func NewMsgCreateChallenge(creator string, category string, date string, uri string) *MsgCreateChallenge {
+func NewMsgCreateChallenge(creator string, category string, date int64, uri string) *MsgCreateChallenge {
 	return &MsgCreateChallenge{
 		Creator:  creator,
 		Category: category,

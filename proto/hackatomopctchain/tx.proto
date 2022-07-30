@@ -26,11 +26,12 @@ message MsgDoneOpctResponse {
 message MsgCreateChallenge {
   string creator = 1;
   string category = 2;
-  string date = 3;
+  int64 date = 3;
   string uri = 4;
 }
 
 message MsgCreateChallengeResponse {
+  uint64 id = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

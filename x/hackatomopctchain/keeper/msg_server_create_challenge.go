@@ -10,8 +10,13 @@ import (
 func (k msgServer) CreateChallenge(goCtx context.Context, msg *types.MsgCreateChallenge) (*types.MsgCreateChallengeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	var challenge = types.Challenge{
+		Creator:  msg.Creator,
+		Category: msg.Category,
+		Date:     msg.Date,
+		Uri:      msg.Uri,
+	}
+	id := k.StoreChallenge(ctx, challenge)
 
-	return &types.MsgCreateChallengeResponse{}, nil
+	return &types.MsgCreateChallengeResponse{Id: id}, nil
 }

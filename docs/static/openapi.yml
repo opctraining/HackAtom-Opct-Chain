@@ -47292,6 +47292,10 @@ definitions:
         format: int64
   hackatomopctchain.hackatomopctchain.MsgCreateChallengeResponse:
     type: object
+    properties:
+      id:
+        type: string
+        format: uint64
   hackatomopctchain.hackatomopctchain.MsgDoneOpctResponse:
     type: object
   hackatomopctchain.hackatomopctchain.Params:

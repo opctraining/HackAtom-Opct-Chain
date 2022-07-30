@@ -25,7 +25,10 @@ export interface HackatomopctchainExercise {
   endTime?: string;
 }
 
-export type HackatomopctchainMsgCreateChallengeResponse = object;
+export interface HackatomopctchainMsgCreateChallengeResponse {
+  /** @format uint64 */
+  id?: string;
+}
 
 export type HackatomopctchainMsgDoneOpctResponse = object;
 
@@ -323,7 +326,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title hackatomopctchain/exercise.proto
+ * @title hackatomopctchain/challenge.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {

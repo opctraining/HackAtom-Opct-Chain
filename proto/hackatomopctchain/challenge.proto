@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package hackatomopctchain.hackatomopctchain;
+
+option go_package = "hackatom-opct-chain/x/hackatomopctchain/types";
+
+message Challenge {
+  uint64 id = 1;
+  string creator = 2;
+  string category = 3;
+  int64 date = 4;
+  string uri = 5;
+}

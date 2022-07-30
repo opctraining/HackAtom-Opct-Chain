@@ -1,10 +1,11 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { Challenge } from "./module/types/hackatomopctchain/challenge"
 import { Exercise } from "./module/types/hackatomopctchain/exercise"
 import { Params } from "./module/types/hackatomopctchain/params"
 
 
-export { Exercise, Params };
+export { Challenge, Exercise, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -46,6 +47,7 @@ const getDefaultState = () => {
 				Exercises: {},
 				
 				_Structure: {
+						Challenge: getStructure(Challenge.fromPartial({})),
 						Exercise: getStructure(Exercise.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
@@ -170,21 +172,6 @@ export default {
 		},
 		
 		
-		async sendMsgDoneOpct({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgDoneOpct(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgDoneOpct:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgDoneOpct:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgCreateChallenge({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -200,20 +187,22 @@ export default {
 				}
 			}
 		},
-		
-		async MsgDoneOpct({ rootGetters }, { value }) {
+		async sendMsgDoneOpct({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgDoneOpct(value)
-				return msg
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgDoneOpct:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgDoneOpct:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgDoneOpct:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgCreateChallenge({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -224,6 +213,19 @@ export default {
 					throw new Error('TxClient:MsgCreateChallenge:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgCreateChallenge:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgDoneOpct({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgDoneOpct(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgDoneOpct:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgDoneOpct:Create Could not create message: ' + e.message)
 				}
 			}
 		},

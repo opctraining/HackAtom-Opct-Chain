@@ -17,11 +17,13 @@ export interface MsgDoneOpctResponse {}
 export interface MsgCreateChallenge {
   creator: string;
   category: string;
-  date: string;
+  date: number;
   uri: string;
 }
 
-export interface MsgCreateChallengeResponse {}
+export interface MsgCreateChallengeResponse {
+  id: number;
+}
 
 const baseMsgDoneOpct: object = {
   creator: "",
@@ -193,7 +195,7 @@ export const MsgDoneOpctResponse = {
 const baseMsgCreateChallenge: object = {
   creator: "",
   category: "",
-  date: "",
+  date: 0,
   uri: "",
 };
 
@@ -208,8 +210,8 @@ export const MsgCreateChallenge = {
     if (message.category !== "") {
       writer.uint32(18).string(message.category);
     }
-    if (message.date !== "") {
-      writer.uint32(26).string(message.date);
+    if (message.date !== 0) {
+      writer.uint32(24).int64(message.date);
     }
     if (message.uri !== "") {
       writer.uint32(34).string(message.uri);
@@ -231,7 +233,7 @@ export const MsgCreateChallenge = {
           message.category = reader.string();
           break;
         case 3:
-          message.date = reader.string();
+          message.date = longToNumber(reader.int64() as Long);
           break;
         case 4:
           message.uri = reader.string();
@@ -257,9 +259,9 @@ export const MsgCreateChallenge = {
       message.category = "";
     }
     if (object.date !== undefined && object.date !== null) {
-      message.date = String(object.date);
+      message.date = Number(object.date);
     } else {
-      message.date = "";
+      message.date = 0;
     }
     if (object.uri !== undefined && object.uri !== null) {
       message.uri = String(object.uri);
@@ -293,7 +295,7 @@ export const MsgCreateChallenge = {
     if (object.date !== undefined && object.date !== null) {
       message.date = object.date;
     } else {
-      message.date = "";
+      message.date = 0;
     }
     if (object.uri !== undefined && object.uri !== null) {
       message.uri = object.uri;
@@ -304,13 +306,16 @@ export const MsgCreateChallenge = {
   },
 };
 
-const baseMsgCreateChallengeResponse: object = {};
+const baseMsgCreateChallengeResponse: object = { id: 0 };
 
 export const MsgCreateChallengeResponse = {
   encode(
-    _: MsgCreateChallengeResponse,
+    message: MsgCreateChallengeResponse,
     writer: Writer = Writer.create()
   ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
     return writer;
   },
 
@@ -326,6 +331,9 @@ export const MsgCreateChallengeResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -334,24 +342,35 @@ export const MsgCreateChallengeResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgCreateChallengeResponse {
+  fromJSON(object: any): MsgCreateChallengeResponse {
     const message = {
       ...baseMsgCreateChallengeResponse,
     } as MsgCreateChallengeResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 
-  toJSON(_: MsgCreateChallengeResponse): unknown {
+  toJSON(message: MsgCreateChallengeResponse): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgCreateChallengeResponse>
+    object: DeepPartial<MsgCreateChallengeResponse>
   ): MsgCreateChallengeResponse {
     const message = {
       ...baseMsgCreateChallengeResponse,
     } as MsgCreateChallengeResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 };
