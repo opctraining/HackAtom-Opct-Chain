@@ -3,6 +3,7 @@ package hackatomopctchain.badge;
 
 import "gogoproto/gogo.proto";
 import "badge/params.proto";
+import "badge/badge_info.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "hackatom-opct-chain/x/badge/types";
@@ -10,5 +11,6 @@ option go_package = "hackatom-opct-chain/x/badge/types";
 // GenesisState defines the badge module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated BadgeInfo badgeInfoList = 2 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

@@ -9,7 +9,11 @@ import (
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
+	io "io"
 	math "math"
+	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -23,18 +27,335 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type MsgCreateBadgeInfo struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Index   string `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
+	BadgeId string `protobuf:"bytes,3,opt,name=badgeId,proto3" json:"badgeId,omitempty"`
+	Name    string `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (m *MsgCreateBadgeInfo) Reset()         { *m = MsgCreateBadgeInfo{} }
+func (m *MsgCreateBadgeInfo) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateBadgeInfo) ProtoMessage()    {}
+func (*MsgCreateBadgeInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81b226de1942d413, []int{0}
+}
+func (m *MsgCreateBadgeInfo) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateBadgeInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateBadgeInfo.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateBadgeInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateBadgeInfo.Merge(m, src)
+}
+func (m *MsgCreateBadgeInfo) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateBadgeInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateBadgeInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateBadgeInfo proto.InternalMessageInfo
+
+func (m *MsgCreateBadgeInfo) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgCreateBadgeInfo) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+func (m *MsgCreateBadgeInfo) GetBadgeId() string {
+	if m != nil {
+		return m.BadgeId
+	}
+	return ""
+}
+
+func (m *MsgCreateBadgeInfo) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+type MsgCreateBadgeInfoResponse struct {
+}
+
+func (m *MsgCreateBadgeInfoResponse) Reset()         { *m = MsgCreateBadgeInfoResponse{} }
+func (m *MsgCreateBadgeInfoResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateBadgeInfoResponse) ProtoMessage()    {}
+func (*MsgCreateBadgeInfoResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81b226de1942d413, []int{1}
+}
+func (m *MsgCreateBadgeInfoResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateBadgeInfoResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateBadgeInfoResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateBadgeInfoResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateBadgeInfoResponse.Merge(m, src)
+}
+func (m *MsgCreateBadgeInfoResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateBadgeInfoResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateBadgeInfoResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateBadgeInfoResponse proto.InternalMessageInfo
+
+type MsgUpdateBadgeInfo struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Index   string `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
+	BadgeId string `protobuf:"bytes,3,opt,name=badgeId,proto3" json:"badgeId,omitempty"`
+	Name    string `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (m *MsgUpdateBadgeInfo) Reset()         { *m = MsgUpdateBadgeInfo{} }
+func (m *MsgUpdateBadgeInfo) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateBadgeInfo) ProtoMessage()    {}
+func (*MsgUpdateBadgeInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81b226de1942d413, []int{2}
+}
+func (m *MsgUpdateBadgeInfo) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateBadgeInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateBadgeInfo.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateBadgeInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateBadgeInfo.Merge(m, src)
+}
+func (m *MsgUpdateBadgeInfo) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateBadgeInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateBadgeInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateBadgeInfo proto.InternalMessageInfo
+
+func (m *MsgUpdateBadgeInfo) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgUpdateBadgeInfo) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+func (m *MsgUpdateBadgeInfo) GetBadgeId() string {
+	if m != nil {
+		return m.BadgeId
+	}
+	return ""
+}
+
+func (m *MsgUpdateBadgeInfo) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+type MsgUpdateBadgeInfoResponse struct {
+}
+
+func (m *MsgUpdateBadgeInfoResponse) Reset()         { *m = MsgUpdateBadgeInfoResponse{} }
+func (m *MsgUpdateBadgeInfoResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateBadgeInfoResponse) ProtoMessage()    {}
+func (*MsgUpdateBadgeInfoResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81b226de1942d413, []int{3}
+}
+func (m *MsgUpdateBadgeInfoResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateBadgeInfoResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateBadgeInfoResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateBadgeInfoResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateBadgeInfoResponse.Merge(m, src)
+}
+func (m *MsgUpdateBadgeInfoResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateBadgeInfoResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateBadgeInfoResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateBadgeInfoResponse proto.InternalMessageInfo
+
+type MsgDeleteBadgeInfo struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Index   string `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (m *MsgDeleteBadgeInfo) Reset()         { *m = MsgDeleteBadgeInfo{} }
+func (m *MsgDeleteBadgeInfo) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteBadgeInfo) ProtoMessage()    {}
+func (*MsgDeleteBadgeInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81b226de1942d413, []int{4}
+}
+func (m *MsgDeleteBadgeInfo) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteBadgeInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteBadgeInfo.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteBadgeInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteBadgeInfo.Merge(m, src)
+}
+func (m *MsgDeleteBadgeInfo) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteBadgeInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteBadgeInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteBadgeInfo proto.InternalMessageInfo
+
+func (m *MsgDeleteBadgeInfo) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgDeleteBadgeInfo) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+type MsgDeleteBadgeInfoResponse struct {
+}
+
+func (m *MsgDeleteBadgeInfoResponse) Reset()         { *m = MsgDeleteBadgeInfoResponse{} }
+func (m *MsgDeleteBadgeInfoResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteBadgeInfoResponse) ProtoMessage()    {}
+func (*MsgDeleteBadgeInfoResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81b226de1942d413, []int{5}
+}
+func (m *MsgDeleteBadgeInfoResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteBadgeInfoResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteBadgeInfoResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteBadgeInfoResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteBadgeInfoResponse.Merge(m, src)
+}
+func (m *MsgDeleteBadgeInfoResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteBadgeInfoResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteBadgeInfoResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteBadgeInfoResponse proto.InternalMessageInfo
+
+func init() {
+	proto.RegisterType((*MsgCreateBadgeInfo)(nil), "hackatomopctchain.badge.MsgCreateBadgeInfo")
+	proto.RegisterType((*MsgCreateBadgeInfoResponse)(nil), "hackatomopctchain.badge.MsgCreateBadgeInfoResponse")
+	proto.RegisterType((*MsgUpdateBadgeInfo)(nil), "hackatomopctchain.badge.MsgUpdateBadgeInfo")
+	proto.RegisterType((*MsgUpdateBadgeInfoResponse)(nil), "hackatomopctchain.badge.MsgUpdateBadgeInfoResponse")
+	proto.RegisterType((*MsgDeleteBadgeInfo)(nil), "hackatomopctchain.badge.MsgDeleteBadgeInfo")
+	proto.RegisterType((*MsgDeleteBadgeInfoResponse)(nil), "hackatomopctchain.badge.MsgDeleteBadgeInfoResponse")
+}
+
 func init() { proto.RegisterFile("badge/tx.proto", fileDescriptor_81b226de1942d413) }
 
 var fileDescriptor_81b226de1942d413 = []byte{
-	// 121 bytes of a gzipped FileDescriptorProto
+	// 306 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4b, 0x4a, 0x4c, 0x49,
 	0x4f, 0xd5, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0xcf, 0x48, 0x4c, 0xce,
 	0x4e, 0x2c, 0xc9, 0xcf, 0xcd, 0x2f, 0x48, 0x2e, 0x49, 0xce, 0x48, 0xcc, 0xcc, 0xd3, 0x03, 0xab,
-	0x30, 0x62, 0xe5, 0x62, 0xf6, 0x2d, 0x4e, 0x77, 0xb2, 0x3e, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23,
-	0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6,
-	0x63, 0x39, 0x86, 0x28, 0x45, 0x98, 0x4e, 0x5d, 0x90, 0x56, 0x5d, 0xb0, 0x5e, 0xfd, 0x0a, 0x7d,
-	0xa8, 0xf9, 0x95, 0x05, 0xa9, 0xc5, 0x49, 0x6c, 0x60, 0x3b, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff,
-	0xff, 0xe2, 0x30, 0xc0, 0x89, 0x75, 0x00, 0x00, 0x00,
+	0x90, 0x12, 0x83, 0x28, 0x04, 0x93, 0xf1, 0x99, 0x79, 0x69, 0xf9, 0x10, 0x0d, 0x4a, 0x45, 0x5c,
+	0x42, 0xbe, 0xc5, 0xe9, 0xce, 0x45, 0xa9, 0x89, 0x25, 0xa9, 0x4e, 0x20, 0x49, 0xcf, 0xbc, 0xb4,
+	0x7c, 0x21, 0x09, 0x2e, 0xf6, 0x64, 0x90, 0x50, 0x7e, 0x91, 0x04, 0xa3, 0x02, 0xa3, 0x06, 0x67,
+	0x10, 0x8c, 0x2b, 0x24, 0xc2, 0xc5, 0x9a, 0x99, 0x97, 0x92, 0x5a, 0x21, 0xc1, 0x04, 0x16, 0x87,
+	0x70, 0x40, 0xea, 0xc1, 0x26, 0x7b, 0xa6, 0x48, 0x30, 0x43, 0xd4, 0x43, 0xb9, 0x42, 0x42, 0x5c,
+	0x2c, 0x79, 0x89, 0xb9, 0xa9, 0x12, 0x2c, 0x60, 0x61, 0x30, 0x5b, 0x49, 0x86, 0x4b, 0x0a, 0xd3,
+	0xce, 0xa0, 0xd4, 0xe2, 0x82, 0xfc, 0xbc, 0xe2, 0x54, 0xa8, 0x8b, 0x42, 0x0b, 0x52, 0xe8, 0xee,
+	0x22, 0x34, 0x3b, 0xe1, 0x2e, 0x72, 0x01, 0xbb, 0xc8, 0x25, 0x35, 0x27, 0x95, 0x02, 0x17, 0x41,
+	0xed, 0x40, 0x33, 0x05, 0x66, 0x87, 0xd1, 0x13, 0x26, 0x2e, 0x66, 0xdf, 0xe2, 0x74, 0xa1, 0x62,
+	0x2e, 0x7e, 0xf4, 0xc8, 0xd0, 0xd6, 0xc3, 0x11, 0xa9, 0x7a, 0x98, 0xa1, 0x28, 0x65, 0x4c, 0x82,
+	0x62, 0x98, 0xe5, 0x20, 0x4b, 0xd1, 0xc3, 0x1b, 0xaf, 0xa5, 0x68, 0x8a, 0xf1, 0x5b, 0x8a, 0x23,
+	0x54, 0x41, 0x96, 0xa2, 0x07, 0x29, 0x5e, 0x4b, 0xd1, 0x14, 0xe3, 0xb7, 0x14, 0x47, 0x30, 0x3b,
+	0x59, 0x9f, 0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e,
+	0xcb, 0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x22, 0xcc, 0x34, 0x5d,
+	0x90, 0x71, 0xba, 0x60, 0xf3, 0xf4, 0x2b, 0xf4, 0xa1, 0xf9, 0xab, 0xb2, 0x20, 0xb5, 0x38, 0x89,
+	0x0d, 0x9c, 0x65, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x10, 0xe8, 0x67, 0xba, 0x75, 0x03,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -49,6 +370,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
+	CreateBadgeInfo(ctx context.Context, in *MsgCreateBadgeInfo, opts ...grpc.CallOption) (*MsgCreateBadgeInfoResponse, error)
+	UpdateBadgeInfo(ctx context.Context, in *MsgUpdateBadgeInfo, opts ...grpc.CallOption) (*MsgUpdateBadgeInfoResponse, error)
+	DeleteBadgeInfo(ctx context.Context, in *MsgDeleteBadgeInfo, opts ...grpc.CallOption) (*MsgDeleteBadgeInfoResponse, error)
 }
 
 type msgClient struct {
@@ -59,22 +383,1153 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
+func (c *msgClient) CreateBadgeInfo(ctx context.Context, in *MsgCreateBadgeInfo, opts ...grpc.CallOption) (*MsgCreateBadgeInfoResponse, error) {
+	out := new(MsgCreateBadgeInfoResponse)
+	err := c.cc.Invoke(ctx, "/hackatomopctchain.badge.Msg/CreateBadgeInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateBadgeInfo(ctx context.Context, in *MsgUpdateBadgeInfo, opts ...grpc.CallOption) (*MsgUpdateBadgeInfoResponse, error) {
+	out := new(MsgUpdateBadgeInfoResponse)
+	err := c.cc.Invoke(ctx, "/hackatomopctchain.badge.Msg/UpdateBadgeInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteBadgeInfo(ctx context.Context, in *MsgDeleteBadgeInfo, opts ...grpc.CallOption) (*MsgDeleteBadgeInfoResponse, error) {
+	out := new(MsgDeleteBadgeInfoResponse)
+	err := c.cc.Invoke(ctx, "/hackatomopctchain.badge.Msg/DeleteBadgeInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
+	CreateBadgeInfo(context.Context, *MsgCreateBadgeInfo) (*MsgCreateBadgeInfoResponse, error)
+	UpdateBadgeInfo(context.Context, *MsgUpdateBadgeInfo) (*MsgUpdateBadgeInfoResponse, error)
+	DeleteBadgeInfo(context.Context, *MsgDeleteBadgeInfo) (*MsgDeleteBadgeInfoResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
+func (*UnimplementedMsgServer) CreateBadgeInfo(ctx context.Context, req *MsgCreateBadgeInfo) (*MsgCreateBadgeInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBadgeInfo not implemented")
+}
+func (*UnimplementedMsgServer) UpdateBadgeInfo(ctx context.Context, req *MsgUpdateBadgeInfo) (*MsgUpdateBadgeInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBadgeInfo not implemented")
+}
+func (*UnimplementedMsgServer) DeleteBadgeInfo(ctx context.Context, req *MsgDeleteBadgeInfo) (*MsgDeleteBadgeInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBadgeInfo not implemented")
+}
+
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
+}
+
+func _Msg_CreateBadgeInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateBadgeInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateBadgeInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/hackatomopctchain.badge.Msg/CreateBadgeInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateBadgeInfo(ctx, req.(*MsgCreateBadgeInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateBadgeInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateBadgeInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateBadgeInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/hackatomopctchain.badge.Msg/UpdateBadgeInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateBadgeInfo(ctx, req.(*MsgUpdateBadgeInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteBadgeInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteBadgeInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteBadgeInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/hackatomopctchain.badge.Msg/DeleteBadgeInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteBadgeInfo(ctx, req.(*MsgDeleteBadgeInfo))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "hackatomopctchain.badge.Msg",
 	HandlerType: (*MsgServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "badge/tx.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateBadgeInfo",
+			Handler:    _Msg_CreateBadgeInfo_Handler,
+		},
+		{
+			MethodName: "UpdateBadgeInfo",
+			Handler:    _Msg_UpdateBadgeInfo_Handler,
+		},
+		{
+			MethodName: "DeleteBadgeInfo",
+			Handler:    _Msg_DeleteBadgeInfo_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "badge/tx.proto",
 }
+
+func (m *MsgCreateBadgeInfo) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateBadgeInfo) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateBadgeInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.BadgeId) > 0 {
+		i -= len(m.BadgeId)
+		copy(dAtA[i:], m.BadgeId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.BadgeId)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateBadgeInfoResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateBadgeInfoResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateBadgeInfoResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateBadgeInfo) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateBadgeInfo) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateBadgeInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.BadgeId) > 0 {
+		i -= len(m.BadgeId)
+		copy(dAtA[i:], m.BadgeId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.BadgeId)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateBadgeInfoResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateBadgeInfoResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateBadgeInfoResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteBadgeInfo) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteBadgeInfo) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteBadgeInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteBadgeInfoResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteBadgeInfoResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteBadgeInfoResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
+	offset -= sovTx(v)
+	base := offset
+	for v >= 1<<7 {
+		dAtA[offset] = uint8(v&0x7f | 0x80)
+		v >>= 7
+		offset++
+	}
+	dAtA[offset] = uint8(v)
+	return base
+}
+func (m *MsgCreateBadgeInfo) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.BadgeId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgCreateBadgeInfoResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgUpdateBadgeInfo) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.BadgeId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgUpdateBadgeInfoResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgDeleteBadgeInfo) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgDeleteBadgeInfoResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func sovTx(x uint64) (n int) {
+	return (math_bits.Len64(x|1) + 6) / 7
+}
+func sozTx(x uint64) (n int) {
+	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *MsgCreateBadgeInfo) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateBadgeInfo: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateBadgeInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BadgeId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.BadgeId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateBadgeInfoResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateBadgeInfoResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateBadgeInfoResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateBadgeInfo) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateBadgeInfo: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateBadgeInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BadgeId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.BadgeId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateBadgeInfoResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateBadgeInfoResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateBadgeInfoResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteBadgeInfo) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteBadgeInfo: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteBadgeInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteBadgeInfoResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteBadgeInfoResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteBadgeInfoResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func skipTx(dAtA []byte) (n int, err error) {
+	l := len(dAtA)
+	iNdEx := 0
+	depth := 0
+	for iNdEx < l {
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return 0, ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return 0, io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		wireType := int(wire & 0x7)
+		switch wireType {
+		case 0:
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return 0, ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return 0, io.ErrUnexpectedEOF
+				}
+				iNdEx++
+				if dAtA[iNdEx-1] < 0x80 {
+					break
+				}
+			}
+		case 1:
+			iNdEx += 8
+		case 2:
+			var length int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return 0, ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return 0, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				length |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if length < 0 {
+				return 0, ErrInvalidLengthTx
+			}
+			iNdEx += length
+		case 3:
+			depth++
+		case 4:
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupTx
+			}
+			depth--
+		case 5:
+			iNdEx += 4
+		default:
+			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
+		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthTx
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
+	}
+	return 0, io.ErrUnexpectedEOF
+}
+
+var (
+	ErrInvalidLengthTx        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowTx          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupTx = fmt.Errorf("proto: unexpected end of group")
+)

@@ -1,13 +1,41 @@
 syntax = "proto3";
 package hackatomopctchain.badge;
 
+import "badge/badge_info.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "hackatom-opct-chain/x/badge/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc CreateBadgeInfo(MsgCreateBadgeInfo) returns (MsgCreateBadgeInfoResponse);
+  rpc UpdateBadgeInfo(MsgUpdateBadgeInfo) returns (MsgUpdateBadgeInfoResponse);
+  rpc DeleteBadgeInfo(MsgDeleteBadgeInfo) returns (MsgDeleteBadgeInfoResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
 }
+
+message MsgCreateBadgeInfo {
+  string creator = 1;
+  string index = 2;
+
+  string badgeId = 3;
+  string name = 4;
+}
+message MsgCreateBadgeInfoResponse {}
+
+message MsgUpdateBadgeInfo {
+  string creator = 1;
+  string index = 2;
+
+  string badgeId = 3;
+  string name = 4;
+}
+message MsgUpdateBadgeInfoResponse {}
+
+message MsgDeleteBadgeInfo {
+  string creator = 1;
+  string index = 2;
+}
+message MsgDeleteBadgeInfoResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

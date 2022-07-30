@@ -4,9 +4,15 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgUpdateBadgeInfo } from "./types/badge/tx";
+import { MsgDeleteBadgeInfo } from "./types/badge/tx";
+import { MsgCreateBadgeInfo } from "./types/badge/tx";
 
 
 const types = [
+  ["/hackatomopctchain.badge.MsgUpdateBadgeInfo", MsgUpdateBadgeInfo],
+  ["/hackatomopctchain.badge.MsgDeleteBadgeInfo", MsgDeleteBadgeInfo],
+  ["/hackatomopctchain.badge.MsgCreateBadgeInfo", MsgCreateBadgeInfo],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -39,6 +45,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgUpdateBadgeInfo: (data: MsgUpdateBadgeInfo): EncodeObject => ({ typeUrl: "/hackatomopctchain.badge.MsgUpdateBadgeInfo", value: MsgUpdateBadgeInfo.fromPartial( data ) }),
+    msgDeleteBadgeInfo: (data: MsgDeleteBadgeInfo): EncodeObject => ({ typeUrl: "/hackatomopctchain.badge.MsgDeleteBadgeInfo", value: MsgDeleteBadgeInfo.fromPartial( data ) }),
+    msgCreateBadgeInfo: (data: MsgCreateBadgeInfo): EncodeObject => ({ typeUrl: "/hackatomopctchain.badge.MsgCreateBadgeInfo", value: MsgCreateBadgeInfo.fromPartial( data ) }),
     
   };
 };

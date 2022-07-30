@@ -1,0 +1,12 @@
+syntax = "proto3";
+package hackatomopctchain.badge;
+
+option go_package = "hackatom-opct-chain/x/badge/types";
+
+message BadgeInfo {
+  string index = 1; 
+  string badgeId = 2; 
+  string name = 3; 
+  string creator = 4;
+}
+
