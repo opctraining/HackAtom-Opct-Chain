@@ -10,5 +10,4 @@ message Challenge {
   string category = 3;
   int64 date = 4;
   string uri = 5;
-  uint64 rewardId = 6;
 }

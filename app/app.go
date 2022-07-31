@@ -394,7 +394,6 @@ func New(
 		keys[hackatomopctchainmoduletypes.StoreKey],
 		keys[hackatomopctchainmoduletypes.MemStoreKey],
 		app.GetSubspace(hackatomopctchainmoduletypes.ModuleName),
-		app.BankKeeper,
 	)
 	hackatomopctchainModule := hackatomopctchainmodule.NewAppModule(appCodec, app.HackatomopctchainKeeper, app.AccountKeeper, app.BankKeeper)
 

@@ -1,13 +1,11 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
-import { BadgeMeta } from "./module/types/hackatomopctchain/badge"
-import { BadgeNFT } from "./module/types/hackatomopctchain/badge"
 import { Challenge } from "./module/types/hackatomopctchain/challenge"
 import { Exercise } from "./module/types/hackatomopctchain/exercise"
 import { Params } from "./module/types/hackatomopctchain/params"
 
 
-export { BadgeMeta, BadgeNFT, Challenge, Exercise, Params };
+export { Challenge, Exercise, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -50,8 +48,6 @@ const getDefaultState = () => {
 				Challenges: {},
 				
 				_Structure: {
-						BadgeMeta: getStructure(BadgeMeta.fromPartial({})),
-						BadgeNFT: getStructure(BadgeNFT.fromPartial({})),
 						Challenge: getStructure(Challenge.fromPartial({})),
 						Exercise: getStructure(Exercise.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),

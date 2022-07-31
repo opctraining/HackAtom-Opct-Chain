@@ -10,7 +10,6 @@ export interface Challenge {
   category: string;
   date: number;
   uri: string;
-  rewardId: number;
 }
 
 const baseChallenge: object = {
@@ -19,7 +18,6 @@ const baseChallenge: object = {
   category: "",
   date: 0,
   uri: "",
-  rewardId: 0,
 };
 
 export const Challenge = {
@@ -38,9 +36,6 @@ export const Challenge = {
     }
     if (message.uri !== "") {
       writer.uint32(42).string(message.uri);
-    }
-    if (message.rewardId !== 0) {
-      writer.uint32(48).uint64(message.rewardId);
     }
     return writer;
   },
@@ -66,9 +61,6 @@ export const Challenge = {
           break;
         case 5:
           message.uri = reader.string();
-          break;
-        case 6:
-          message.rewardId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -105,11 +97,6 @@ export const Challenge = {
     } else {
       message.uri = "";
     }
-    if (object.rewardId !== undefined && object.rewardId !== null) {
-      message.rewardId = Number(object.rewardId);
-    } else {
-      message.rewardId = 0;
-    }
     return message;
   },
 
@@ -120,7 +107,6 @@ export const Challenge = {
     message.category !== undefined && (obj.category = message.category);
     message.date !== undefined && (obj.date = message.date);
     message.uri !== undefined && (obj.uri = message.uri);
-    message.rewardId !== undefined && (obj.rewardId = message.rewardId);
     return obj;
   },
 
@@ -150,11 +136,6 @@ export const Challenge = {
       message.uri = object.uri;
     } else {
       message.uri = "";
-    }
-    if (object.rewardId !== undefined && object.rewardId !== null) {
-      message.rewardId = object.rewardId;
-    } else {
-      message.rewardId = 0;
     }
     return message;
   },
