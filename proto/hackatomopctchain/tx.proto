@@ -29,6 +29,8 @@ message MsgCreateChallenge {
   string category = 2;
   int64 date = 3;
   string uri = 4;
+  string badgeName = 5;
+  string badgeURI = 6;
 }
 
 message MsgCreateChallengeResponse {
